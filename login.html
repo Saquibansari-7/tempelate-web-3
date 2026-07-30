@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - Isabel & Kevin Wedding</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        crimson: '#8B0000',
+                        blush: '#F4A0A0',
+                        ivory: '#FDF6F0',
+                        dark: '#1A0505',
+                    },
+                    fontFamily: {
+                        serif: ['"Cormorant Garamond"', 'serif'],
+                        script: ['"Dancing Script"', 'cursive'],
+                    },
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gradient-to-br from-crimson via-dark to-burgundy min-h-screen flex items-center justify-center p-4">
+    <div class="w-full max-w-md">
+        <!-- Login Card -->
+        <div class="bg-white rounded-lg shadow-2xl overflow-hidden">
+            <!-- Header -->
+            <div class="bg-crimson text-white p-8 text-center">
+                <i class="fas fa-ring text-4xl mb-4 block"></i>
+                <h1 class="font-display text-3xl font-bold">Wedding Admin</h1>
+                <p class="text-blush text-sm mt-2">Isabel & Kevin</p>
+            </div>
+
+            <!-- Form -->
+            <form action="/login" method="POST" class="p-8">
+                <div class="mb-6">
+                    <label for="username" class="block text-dark font-serif font-bold mb-2">
+                        <i class="fas fa-user mr-2 text-crimson"></i>Username
+                    </label>
+                    <input 
+                        type="text" 
+                        id="username"
+                        name="username" 
+                        class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-crimson transition" 
+                        required
+                        placeholder="Enter username"
+                    >
+                </div>
+
+                <div class="mb-8">
+                    <label for="password" class="block text-dark font-serif font-bold mb-2">
+                        <i class="fas fa-lock mr-2 text-crimson"></i>Password
+                    </label>
+                    <input 
+                        type="password" 
+                        id="password"
+                        name="password" 
+                        class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-crimson transition" 
+                        required
+                        placeholder="Enter password"
+                    >
+                </div>
+
+                <button 
+                    type="submit" 
+                    class="w-full bg-crimson hover:bg-burgundy text-white font-serif font-bold py-3 rounded-lg transition duration-300 transform hover:scale-105"
+                >
+                    <i class="fas fa-sign-in-alt mr-2"></i> Login to Admin Panel
+                </button>
+            </form>
+
+            <!-- Footer -->
+            <div class="bg-gray-50 px-8 py-4 text-center border-t border-gray-200">
+                <p class="text-gray-600 text-sm font-serif">Demo Credentials:</p>
+                <p class="text-gray-500 text-xs">Username: <strong>admin</strong> | Password: <strong>password</strong></p>
+            </div>
+        </div>
+
+        <!-- Decorative Element -->
+        <div class="text-center mt-8 text-blush/30">
+            <i class="fas fa-heart text-4xl"></i>
+        </div>
+    </div>
+</body>
+</html>
