@@ -230,27 +230,27 @@
 
         <div class="container mx-auto px-4 relative z-10 text-center">
             <div class="mb-8 animate-float-">
-                <p class="font-script text-3xl md:text-5xl text-blush mb-2">We are getting married</p>
-                <h2 class="text-xl md:text-2xl tracking-[0.3em] uppercase border-t border-b border-blush/50 inline-block py-2 px-8">Save the Date</h2>
+                <p class="font-script text-3xl md:text-5xl text-blush mb-2" data-bind="hero-subtitle">We are getting married</p>
+                <h2 class="text-xl md:text-2xl tracking-[0.3em] uppercase border-t border-b border-blush/50 inline-block py-2 px-8" data-bind="std-heading">Save the Date</h2>
             </div>
 
             <!-- Couple Photo Frame -->
             <div class="relative mx-auto w-64 h-64 md:w-80 md:h-80 mb-8 group cursor-pointer reveal">
                 <div class="absolute inset-0 border-4 border-double border-blush rounded-full transform transition-all duration-500 group-hover:rotate-12 group-hover:scale-105"></div>
                 <div class="absolute -inset-2 border border-white/30 rounded-full animate-pulse-slow"></div>
-                <img src="https://picsum.photos/seed/isabelkevin/400/400" alt="Couple" class="w-full h-full object-cover rounded-full shadow-2xl filter sepia-[.3]" id="coupleImg">
-                <div class="absolute -bottom-4 right-0 bg-dark text-blush text-xs font-bold px-3 py-1 rounded-full border border-blush" id="hashtag">#IsabelAndKevin</div>
+                <img data-bind="hero-img" src="https://picsum.photos/seed/isabelkevin/400/400" alt="Couple" class="w-full h-full object-cover rounded-full shadow-2xl filter sepia-[.3]" id="coupleImg">
+                <div class="absolute -bottom-4 right-0 bg-dark text-blush text-xs font-bold px-3 py-1 rounded-full border border-blush" id="hashtag" data-bind="hashtag">#IsabelAndKevin</div>
             </div>
 
             <!-- Names -->
             <h1 id="frontNames" class="font-display text-6xl md:text-8xl mb-2 tracking-wide reveal">
-                ISABEL <span class="font-script text-5xl md:text-7xl text-blush mx-2">&</span> KEVIN
+                <span data-bind="name1">ISABEL</span> <span class="font-script text-5xl md:text-7xl text-blush mx-2">&</span> <span data-bind="name2">KEVIN</span>
             </h1>
 
             <!-- Date & Mini Calendar -->
             <div class="mt-8 flex flex-col md:flex-row items-center justify-center gap-8 reveal">
                 <div class="bg-white/10 backdrop-blur-sm border border-white/20 p-6 rounded-lg text-center transform hover:-translate-y-2 transition duration-300">
-                    <div class="font-display text-4xl font-bold mb-1" id="weddingDateDisplay"></div>
+                    <div class="font-display text-4xl font-bold mb-1" id="weddingDateDisplay" data-bind="hero-date-loc"></div>
                     <div class="text-xs uppercase tracking-widest text-blush" id="weddingDayDisplay"></div>
                 </div>
                 
@@ -279,7 +279,7 @@
         <div class="container mx-auto px-6 text-center z-10">
             <div class="max-w-2xl mx-auto mb-16 reveal">
                 <h2 class="font-script text-4xl text-crimson mb-4">Welcome</h2>
-                <p class="font-serif text-xl italic text-gray-700 leading-relaxed" id="welcomeText">
+                <p class="font-serif text-xl italic text-gray-700 leading-relaxed" id="welcomeText" data-bind="quote-text">
                     "Two souls with but a single thought, two hearts that beat as one." <br>
                     We are so excited to celebrate our love with the people who mean the most to us. Join us for a day filled with laughter, love, and happily ever afters.
                 </p>
@@ -319,13 +319,13 @@
         <div class="container mx-auto px-6 flex flex-col md:flex-row items-center gap-12">
             <div class="w-full md:w-1/2 text-center md:text-left reveal">
                 <h2 class="font-script text-5xl mb-2 text-blush">Our</h2>
-                <h3 class="font-display text-4xl md:text-6xl font-bold mb-8 uppercase italic">Love Story</h3>
+                <h3 class="font-display text-4xl md:text-6xl font-bold mb-8 uppercase italic" data-bind="story-heading">Love Story</h3>
                 
                 <div class="font-serif text-lg space-y-6 text-gray-100 leading-relaxed" id="storyText">
-                    <p>
+                    <p data-bind="story-p1">
                         It started with a chance encounter at a coffee shop, where Isabel ordered a tea and Kevin spilled his coffee. Nervous laughter turned into a conversation that lasted for hours, and we haven't stopped talking since.
                     </p>
-                    <p>
+                    <p data-bind="story-p2">
                         Through travels, late-night study sessions, and building a home together, our bond only grew stronger. We realized that we weren't just partners; we were best friends ready to take on the world together.
                     </p>
                     <p>
@@ -341,7 +341,7 @@
             <div class="w-full md:w-1/2 flex justify-center relative reveal">
                 <!-- Rotated Photo Frame -->
                 <div class="relative w-72 h-96 transform rotate-3 hover:rotate-0 transition duration-500 shadow-2xl">
-                    <img src="https://picsum.photos/seed/lovestory/400/600" alt="Love Story" class="w-full h-full object-cover border-8 border-white/90" id="storyImg">
+                    <img data-bind="story-img" src="https://picsum.photos/seed/lovestory/400/600" alt="Love Story" class="w-full h-full object-cover border-8 border-white/90" id="storyImg">
                     <!-- Tape Effect -->
                     <div class="absolute -top-4 left-1/2 -translate-x-1/2 w-32 h-8 bg-white/40 transform rotate-2 shadow-sm"></div>
                 </div>
@@ -402,19 +402,19 @@
                 <!-- Ceremony Block -->
                 <div class="w-full md:w-1/2 p-12 text-center border-r border-gray-700 bg-burgundy">
                     <h3 class="font-display text-3xl uppercase tracking-widest mb-6">Ceremony</h3>
-                    <div class="space-y-4 font-serif text-lg text-gray-200 mb-8">
+                    <div class="space-y-4 font-serif text-lg text-gray-200 mb-8" data-bind="ev-cer">
                         <p class="font-bold text-white" id="ceremonyLocation">The Grand Chapel</p>
                          <p id="ceremonyAddress">123 Love Avenue, City of Romance</p>
                          <p id="ceremonyDate"></p>
                          <p id="ceremonyTime">10:00 AM</p>
-                    </div>
-                    <button id="viewMapBtn" class="px-8 py-3 bg-crimson text-white font-bold uppercase tracking-widest text-xs rounded hover:bg-red-800 transition duration-300 transform hover:scale-105">
-                        <i class="fas fa-map-marker-alt mr-2"></i> View Map
-                    </button>
-                    <div class="mt-12 text-blush/50 text-4xl">
-                        <i class="fas fa-church"></i>
-                    </div>
-                </div>
+                     </div>
+                     <button id="viewMapBtn" data-bind="view-location" class="px-8 py-3 bg-crimson text-white font-bold uppercase tracking-widest text-xs rounded hover:bg-red-800 transition duration-300 transform hover:scale-105">
+                         <i class="fas fa-map-marker-alt mr-2"></i> View Map
+                     </button>
+                     <div class="mt-12 text-blush/50 text-4xl">
+                         <i class="fas fa-church"></i>
+                     </div>
+                 </div>
 
                 <!-- Reception Block -->
                 <div class="w-full md:w-1/2 p-12 text-center bg-dark relative overflow-hidden">
@@ -422,27 +422,27 @@
                      <div class="absolute inset-0 bg-gradient-to-br from-burgundy/20 to-transparent"></div>
 
                     <h3 class="font-display text-3xl uppercase tracking-widest mb-6 relative z-10">Reception</h3>
-                    <div class="space-y-4 font-serif text-lg text-gray-200 mb-8 relative z-10">
+                    <div class="space-y-4 font-serif text-lg text-gray-200 mb-8 relative z-10" data-bind="ev-rec">
                         <p class="font-bold text-white" id="receptionLocation">The Rose Garden Estate</p>
                          <p id="receptionAddress">456 Sunset Blvd, City of Romance</p>
                          <p id="receptionDate"></p>
                          <p id="receptionTime">1:00 PM onwards</p>
-                    </div>
-                    <button id="viewMenuBtn" class="px-8 py-3 bg-white text-dark font-bold uppercase tracking-widest text-xs rounded hover:bg-gray-100 transition duration-300 transform hover:scale-105 relative z-10">
-                        <i class="fas fa-glass-cheers mr-2"></i> Menu 
-                    </button>
-                    <div class="mt-12 text-blush/50 text-4xl relative z-10">
-                        <i class="fas fa-glass-martini-alt"></i>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Petal Divider -->
-            <div class="text-center mt-12 text-blush text-2xl tracking-[1em] opacity-50 animate-pulse">
-                ✦ ✧ ✶ ✦ ✧
-            </div>
-        </div>
-    </section>
+                     </div>
+                     <button id="viewMenuBtn" class="px-8 py-3 bg-white text-dark font-bold uppercase tracking-widest text-xs rounded hover:bg-gray-100 transition duration-300 transform hover:scale-105 relative z-10">
+                         <i class="fas fa-glass-cheers mr-2"></i> Menu 
+                     </button>
+                     <div class="mt-12 text-blush/50 text-4xl relative z-10">
+                         <i class="fas fa-glass-martini-alt"></i>
+                     </div>
+                 </div>
+             </div>
+             
+             <!-- Petal Divider -->
+             <div class="text-center mt-12 text-blush text-2xl tracking-[1em] opacity-50 animate-pulse">
+                 ✦ ✧ ✶ ✦ ✧
+             </div>
+         </div>
+     </section>
 
     <!-- SECTION 6: WEDDING TIMELINE -->
     <section id="timeline" class="bg-ivory py-20 overflow-hidden relative">
@@ -478,7 +478,7 @@
                 <img src="https://picsum.photos/seed/couplefinal/200/200" class="w-full h-full object-cover rounded-full grayscale" id="finalImg">
             </div>
             
-            <h2 id="endNames" class="font-display text-5xl md:text-7xl mb-4">Isabel & Kevin</h2>
+            <h2 id="endNames" class="font-display text-5xl md:text-7xl mb-4" data-bind="footer-names">Isabel & Kevin</h2>
             <p class="font-script text-3xl md:text-4xl text-blush mb-12">Can't wait to see you!</p>
             
             <div class="flex justify-center -space-x-4 mb-12">
@@ -513,10 +513,162 @@
     <!-- SCRIPTS -->
     <script>
         let data;
-        fetch('/data').then(res => res.json()).then(d => {
-            data = d;
+        (async function loadSiteContent() {
+          const siteId = 'default';
+          const supabaseUrl = '%SUPABASE_URL%';
+          const supabaseKey = '%SUPABASE_KEY%';
+
+          async function trySupabase() {
+            if (!supabaseUrl || !supabaseKey) {
+              console.warn('[site] Supabase env vars missing');
+              return null;
+            }
+            try {
+              const baseUrl = supabaseUrl.replace(/\/$/, '');
+              const res = await fetch(`${baseUrl}/rest/v1/site_content?site_id=eq.${encodeURIComponent(siteId)}&select=data`, {
+                headers: {
+                  apikey: supabaseKey,
+                  Authorization: `Bearer ${supabaseKey}`,
+                  Accept: 'application/json',
+                  Prefer: 'single',
+                },
+              });
+              console.log('[site] Supabase status:', res.status, res.statusText);
+              if (!res.ok) {
+                const text = await res.text().catch(() => '');
+                console.warn('[site] Supabase response:', text.slice(0, 200));
+                return null;
+              }
+              const json = await res.json();
+              console.log('[site] Supabase json keys:', Object.keys(json || {}));
+              if (json && json.data) return json.data;
+              return null;
+            } catch (e) {
+              console.warn('[site] Supabase load failed:', e);
+              return null;
+            }
+          }
+
+          async function tryLocalData() {
+            try {
+              const res = await fetch('/data');
+              console.log('[site] /data status:', res.status, res.statusText);
+              if (!res.ok) return null;
+              const text = await res.text();
+              console.log('[site] /data body starts with:', text.slice(0, 60));
+              return JSON.parse(text);
+            } catch (e) {
+              console.warn('[site] /data load failed:', e);
+              return null;
+            }
+          }
+
+          async function tryServerData() {
+            try {
+              const res = await fetch('http://localhost:8080/data');
+              console.log('[site] server status:', res.status, res.statusText);
+              if (!res.ok) return null;
+              const text = await res.text();
+              console.log('[site] server body starts with:', text.slice(0, 60));
+              return JSON.parse(text);
+            } catch (e) {
+              console.warn('[site] server load failed:', e);
+              return null;
+            }
+          }
+
+          function mapToLegacyFormat(content) {
+            const mapped = {
+              weddingDate: content.countdown?.targetDate || content.hero?.date || '',
+              texts: {
+                welcome: content.quote?.text || '',
+                story: [content.story?.paragraph1, content.story?.paragraph2].filter(Boolean).join('\n\n') || '',
+                hashtag: content.couple?.hashtag || ''
+              },
+              images: {
+                couple: content.hero?.image || '',
+                story: content.story?.image || '',
+                final: content.invitationCard?.image || '',
+                menu: content.events?.menuImage || ''
+              },
+              ceremony: {
+                location: content.events?.ceremony?.venue || '',
+                address: content.events?.ceremony?.location || '',
+                time: content.events?.ceremony?.time || ''
+              },
+              reception: {
+                location: content.events?.reception?.venue || '',
+                address: content.events?.reception?.location || '',
+                time: content.events?.reception?.time || ''
+              },
+              entourage: {
+                parents: content.entourage?.parents || '',
+                sponsors: content.entourage?.sponsors || '',
+                maidOfHonor: content.entourage?.maidOfHonor || '',
+                bestMan: content.entourage?.bestMan || ''
+              },
+              timeline: Array.isArray(content.timeline) ? content.timeline : [],
+              frontNames: `${content.couple?.name1 || ''} & ${content.couple?.name2 || ''}`,
+              endNames: `${content.couple?.name1 || ''} & ${content.couple?.name2 || ''}`,
+              locationCoords: content.events?.ceremony?.mapCoords || content.events?.reception?.mapCoords || { latitude: '', longitude: '' }
+            };
+            console.log('[site] mapped keys:', Object.keys(mapped));
+            return mapped;
+          }
+
+          const supabaseData = await trySupabase();
+          console.log('[site] supabaseData?', !!supabaseData);
+          const localData = await tryLocalData();
+          console.log('[site] localData?', !!localData);
+          const serverData = await tryServerData();
+          console.log('[site] serverData?', !!serverData);
+          data = (supabaseData ? mapToLegacyFormat(supabaseData) : null) || localData || serverData || {
+            weddingDate: '2026-08-22T11:00',
+            texts: {
+              welcome: 'We are so excited to celebrate our love with the people who mean the most to us. Join us for a day filled with laughter, love, and happily ever afters.',
+              story: 'It started with a chance encounter at a coffee shop, where Isabel ordered a tea and Kevin spilled his coffee. Nervous laughter turned into a conversation that lasted for hours, and we haven\'t stopped talking since.\n\nThrough travels, late-night study sessions, and building a home together, our bond only grew stronger. We realized that we weren\'t just partners; we were best friends ready to take on the world together.\n\nThree years later, under a canopy of autumn leaves, Kevin got down on one knee. With tears of joy and a resounding \"Yes!\", we began this beautiful journey toward our wedding day.',
+              hashtag: '#Farhan&Mariyaa'
+            },
+            images: {
+              couple: '',
+              story: '',
+              final: '',
+              menu: ''
+            },
+            ceremony: {
+              location: 'The Grand Chapel',
+              address: '123 Love Avenue, City of Romance',
+              time: '11:00 AM'
+            },
+            reception: {
+              location: 'The Rose Garden Estate',
+              address: '456 Sunset Blvd, City of Romance',
+              time: '1:00 PM onwards'
+            },
+            entourage: {
+              parents: '',
+              sponsors: '',
+              maidOfHonor: '',
+              bestMan: ''
+            },
+            timeline: [
+              { event: 'Ceremony', description: 'Exchange of vows and rings', time: '10:00 AM', icon: 'fas fa-church' },
+              { event: 'Cocktails', description: 'Drinks and canapes by the garden', time: '12:00 PM', icon: 'fas fa-cocktail' },
+              { event: 'Lunch & Program', description: 'Feast, speeches, and dancing', time: '1:00 PM', icon: 'fas fa-utensils' },
+              { event: 'Cake Cutting', description: 'Sweet beginnings', time: '3:30 PM', icon: 'fas fa-birthday-cake' },
+              { event: 'Farewell', description: 'Grand exit send-off', time: '5:00 PM', icon: 'fas fa-door-open' }
+            ],
+            frontNames: 'Farhan & Mariyaa',
+            endNames: 'Farhan & Mariyaa',
+            locationCoords: { latitude: '', longitude: '' }
+          };
+          try {
+            console.log('[site] initDynamicContent called with data:', !!data);
             initDynamicContent();
-        });
+          } catch (e) {
+            console.error('[site] initDynamicContent failed:', e);
+          }
+        })();
 
         function generateCalendar(year, month, highlightDay) {
             const firstDay = new Date(year, month, 1).getDay();
@@ -938,5 +1090,10 @@ if (tlContainer) {
         });
 
     </script>
+
+    <!-- React Admin Mount -->
+    <div id="root">React mount here</div>
+    <script type="module" src="/src/main.tsx"></script>
+    <!-- UNIQUE-MARKER-ADMIN-MOUNT -->
 </body>
 </html>
