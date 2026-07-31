@@ -28,8 +28,8 @@ export function syncContentToDOM(content: WebsiteContent, sections: SectionSetti
     const el = q(sel) as HTMLImageElement | null;
     if (!el) return;
     const trimmed = (value || '').trim();
-    if (!trimmed || trimmed.startsWith('/uploads/')) {
-      if (import.meta.env.DEV) console.warn('[sync] skip broken/local image src', sel, trimmed);
+    if (!trimmed) {
+      if (import.meta.env.DEV) console.warn('[sync] skip empty image src', sel, trimmed);
       return;
     }
 

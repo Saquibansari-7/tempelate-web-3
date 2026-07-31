@@ -51,17 +51,25 @@ export async function saveContent(siteId: string, content: WebsiteContent, secti
     });
 
   if (import.meta.env.DEV) console.log('saveContent - result:', result);
+
+  if (result.error) {
+    throw new Error(`Supabase save failed: ${result.error.message}`);
+  }
+
   return result;
 }
 
 export async function syncToDataJson(siteId: string, content: WebsiteContent, sections: SectionSettings) {
-  try {
-    await fetch('/api/update-data', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ siteId, content, sections }),
-    });
-  } catch {
-    // best effort
+  const res = await fetch('/api/update-data', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ siteId, content, sections }),
+  });
+
+  if (!res.ok) {
+    const body = await res.text().catch(() => '');
+    throw new Error(`Data sync failed: ${res.status} ${res.statusText} ${body}`);
   }
+
+  return res.json();
 }

@@ -10,6 +10,7 @@ const PORT = process.env.PORT || 8080;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static('dist'));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.use(session({
   secret: 'wedding-secret-key-change-in-production',
@@ -47,6 +48,9 @@ app.get('/data', (req, res) => {
   res.set('Access-Control-Allow-Origin', '*');
   res.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
   res.set('Access-Control-Allow-Headers', 'Content-Type');
+  res.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+  res.set('Pragma', 'no-cache');
+  res.set('Expires', '0');
   res.sendFile(path.join(__dirname, 'data.json'));
 });
 
@@ -85,6 +89,7 @@ app.post('/api/update-data', (req, res) => {
         ...existingData.images,
         couple: websiteContent?.hero?.image || existingData.images?.couple || '',
         story: websiteContent?.story?.image || existingData.images?.story || '',
+        final: websiteContent?.invitationCard?.image || existingData.images?.final || '',
         menu: websiteContent?.events?.menuImage || existingData.images?.menu || ''
       },
       locationCoords: websiteContent?.events?.ceremony?.mapCoords || existingData.locationCoords || null,
