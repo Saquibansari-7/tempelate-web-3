@@ -703,6 +703,7 @@
         }
 
         function initDynamicContent() {
+            if (!document.getElementById("welcomeText")) return;
             // Update wedding date
             const weddingDateObj = new Date(data.weddingDate);
             const weddingTimestamp = weddingDateObj.getTime();
