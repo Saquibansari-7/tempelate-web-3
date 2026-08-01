@@ -50,6 +50,99 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
+        /* Opening Animation */
+        #introOverlay {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: #1A0505;
+        }
+        #scene {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            background: #1A0505;
+        }
+        .curtain {
+            position: absolute;
+            top: 0;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(90deg, #6b0010 0%, #8b0f24 30%, #a61d35 50%, #8b0f24 70%, #6b0010 100%);
+            z-index: 10;
+            transition: transform 2s cubic-bezier(.77, 0, .18, 1);
+            box-shadow: 0 0 40px rgba(0,0,0,.5);
+        }
+        .curtain.left {
+            left: 0;
+            border-right: 3px solid rgba(255,255,255,.2);
+        }
+        .curtain.right {
+            right: 0;
+            border-left: 3px solid rgba(255,255,255,.2);
+        }
+        .open .curtain.left {
+            transform: translateX(-100%);
+        }
+        .open .curtain.right {
+            transform: translateX(100%);
+        }
+        #stamp {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            z-index: 20;
+            cursor: pointer;
+            object-fit: contain;
+            filter: drop-shadow(0 8px 20px rgba(0,0,0,.35));
+            transition: .4s;
+            animation: beat 1.2s ease-in-out infinite;
+        }
+        @keyframes beat {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.1); }
+        }
+        #stamp:hover {
+            transform: translate(-50%, -50%) scale(1.08);
+        }
+        .break {
+            animation: breakSeal .8s forwards !important;
+            pointer-events: none;
+        }
+        @keyframes breakSeal {
+            0% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+                filter: drop-shadow(0 8px 20px rgba(0,0,0,.35));
+            }
+            40% {
+                transform: translate(-50%, -50%) scale(1.3) rotate(10deg);
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(0);
+                opacity: 0;
+                visibility: hidden;
+            }
+        }
+        #hint {
+            position: absolute;
+            bottom: 50px;
+            width: 100%;
+            text-align: center;
+            color: white;
+            z-index: 20;
+            font-size: 20px;
+            letter-spacing: 2px;
+        }
+        .fade-out {
+            opacity: 0;
+            transition: opacity .5s;
+        }
+
         /* Custom Styles & Utilities */
         body {
             overflow-x: hidden;
@@ -217,6 +310,15 @@
     </style>
 </head>
 <body class="bg-ivory text-dark antialiased selection:bg-blush selection:text-white">
+
+<div id="introOverlay">
+    <div id="scene">
+        <div class="curtain left"></div>
+        <div class="curtain right"></div>
+        <img id="stamp" src="/uploads/c-stamp-web.png" alt="seal">
+        <div id="hint">Click the seal to open</div>
+    </div>
+</div>
 
     <!-- Antigravity Canvas (Floating Petals & Sparkles) -->
     <canvas id="particleCanvas" class="fixed inset-0 pointer-events-none z-50"></canvas>
@@ -1102,5 +1204,33 @@
     <div id="root">React mount here</div>
     <script type="module" src="/src/main.tsx"></script>
     <!-- UNIQUE-MARKER-ADMIN-MOUNT -->
+
+    <script>
+        const stamp = document.getElementById('stamp');
+        const scene = document.getElementById('scene');
+        const hint = document.getElementById('hint');
+        const introOverlay = document.getElementById('introOverlay');
+
+        document.body.style.overflow = 'hidden';
+
+        const isAdmin = window.location.pathname && window.location.pathname.startsWith('/admin');
+        if (!isAdmin) {
+            stamp.addEventListener('click', () => {
+                stamp.classList.add('break');
+                hint.classList.add('fade-out');
+
+                setTimeout(() => {
+                    scene.classList.add('open');
+                }, 700);
+
+                setTimeout(() => {
+                    introOverlay.style.display = 'none';
+                    document.body.style.overflow = '';
+                }, 2800);
+            });
+        } else {
+            introOverlay.style.display = 'none';
+        }
+    </script>
 </body>
 </html>
