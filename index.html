@@ -758,59 +758,65 @@
                 if (data.reception.time) document.getElementById('receptionTime').innerText = data.reception.time;
             }
 
-       // Timeline
-const tlContainer = document.getElementById('timelineContainer');
-if (tlContainer) {
-  tlContainer.innerHTML = '';
-  if (Array.isArray(data.timeline)) {
-    data.timeline.forEach((item, idx) => {
-      const sideLeft = idx % 2 === 0;
-      const node = document.createElement('div');
-      node.className = 'flex flex-col md:flex-row items-center w-full reveal timeline-item';
+            // Timeline
+            const tlContainer = document.getElementById('timelineContainer');
+            if (tlContainer) {
+              tlContainer.innerHTML = '';
+              const timelineItems = (Array.isArray(data.timeline) && data.timeline.length > 0)
+                ? data.timeline
+                : [
+                    { event: 'Ceremony', description: 'Exchange of vows and rings', time: '10:00 AM', icon: 'fas fa-church' },
+                    { event: 'Cocktails', description: 'Drinks and canapes by the garden', time: '12:00 PM', icon: 'fas fa-cocktail' },
+                    { event: 'Lunch & Program', description: 'Feast, speeches, and dancing', time: '1:00 PM', icon: 'fas fa-utensils' },
+                    { event: 'Cake Cutting', description: 'Sweet beginnings', time: '3:30 PM', icon: 'fas fa-birthday-cake' },
+                    { event: 'Farewell', description: 'Grand exit send-off', time: '5:00 PM', icon: 'fas fa-door-open' }
+                  ];
+              timelineItems.forEach((item, idx) => {
+                  const sideLeft = idx % 2 === 0;
+                  const node = document.createElement('div');
+                  node.className = 'flex flex-col md:flex-row items-center w-full reveal timeline-item';
 
-      const contentHTML = `
-        <div class="w-full md:w-1/2 md:px-12 timeline-name">
-          <h4 class="font-display text-3xl font-bold text-crimson">${item.event || ''}</h4>
-          <p class="font-serif text-lg text-gray-600 italic">${item.description || ''}</p>
-        </div>
-      `;
+                  const contentHTML = `
+                    <div class="w-full md:w-1/2 md:px-12 timeline-name">
+                      <h4 class="font-display text-3xl font-bold text-crimson">${item.event || ''}</h4>
+                      <p class="font-serif text-lg text-gray-600 italic">${item.description || ''}</p>
+                    </div>
+                  `;
 
-      const timeHTML = `
-        <div class="w-full md:w-1/2 md:px-12 font-serif font-bold text-2xl timeline-time">
-          ${item.time || ''}
-        </div>
-      `;
+                  const timeHTML = `
+                    <div class="w-full md:w-1/2 md:px-12 font-serif font-bold text-2xl timeline-time">
+                      ${item.time || ''}
+                    </div>
+                  `;
 
-      const iconHTML = `
-        <div class="absolute left-1/2 -translate-x-1/2 z-10">
-          <div class="timeline-icon relative z-10 w-12 h-12 rounded-full bg-white border-4 ${item.icon && item.icon.includes('blush') ? 'border-blush' : 'border-crimson'} flex items-center justify-center shadow-md hover:scale-125 transition duration-300 cursor-pointer group">
-            <i class="${item.icon || 'fas fa-star'} text-crimson text-base"></i>
-            <div class="sparkle absolute -top-2 -right-2 text-crimson text-sm">✦</div>
-          </div>
-        </div>
-      `;
+                  const iconHTML = `
+                    <div class="absolute left-1/2 -translate-x-1/2 z-10">
+                      <div class="timeline-icon relative z-10 w-12 h-12 rounded-full bg-white border-4 ${item.icon && item.icon.includes('blush') ? 'border-blush' : 'border-crimson'} flex items-center justify-center shadow-md hover:scale-125 transition duration-300 cursor-pointer group">
+                        <i class="${item.icon || 'fas fa-star'} text-crimson text-base"></i>
+                        <div class="sparkle absolute -top-2 -right-2 text-crimson text-sm">✦</div>
+                      </div>
+                    </div>
+                  `;
 
-      if (sideLeft) {
-        // Left side: content on left, time on right
-        node.innerHTML = contentHTML + iconHTML + timeHTML;
-        node.querySelector('.timeline-name').classList.add('md:text-right', 'order-2', 'md:order-1');
-        node.querySelector('.timeline-time').classList.add('order-3');
-      } else {
-        // Right side: time on left, content on right
-        node.innerHTML = timeHTML + iconHTML + contentHTML;
-        node.querySelector('.timeline-name').classList.add('md:text-left');
-        node.querySelector('.timeline-time').classList.add('order-1');
-      }
+                  if (sideLeft) {
+                    node.innerHTML = contentHTML + iconHTML + timeHTML;
+                    node.querySelector('.timeline-name').classList.add('md:text-right', 'order-2', 'md:order-1');
+                    node.querySelector('.timeline-time').classList.add('order-3');
+                  } else {
+                    node.innerHTML = timeHTML + iconHTML + contentHTML;
+                    node.querySelector('.timeline-name').classList.add('md:text-left');
+                    node.querySelector('.timeline-time').classList.add('order-1');
+                  }
 
-      node.style.position = 'relative';
-      tlContainer.appendChild(node);
+                  node.style.position = 'relative';
+                  tlContainer.appendChild(node);
 
-      if (typeof revealObserver !== 'undefined' && revealObserver.observe) {
-        revealObserver.observe(node);
-      }
-    });
-  }
-}
+                  if (typeof revealObserver !== 'undefined' && revealObserver.observe) {
+                    revealObserver.observe(node);
+                  }
+                });
+            }
+
             // Start countdown
             const countdownInterval = setInterval(function() {
                 const now = new Date().getTime();
