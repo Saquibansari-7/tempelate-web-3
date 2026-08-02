@@ -61,7 +61,7 @@ app.get('/api/auth-status', (req, res) => {
   res.status(401).json({ authenticated: false });
 });
 
-app.get('/admin', requireAuth, (req, res) => {
+app.get('/admin', (req, res) => {
   res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 

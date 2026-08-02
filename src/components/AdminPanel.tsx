@@ -135,19 +135,19 @@ export default function AdminPanel({ initialContent, onClose, onLogout }: AdminP
   ];
 
   return (
-    <div className="fixed inset-0 bg-black/70 z-50 flex items-start justify-center p-4 overflow-y-auto">
-      <div className="bg-white rounded-lg shadow-2xl w-full max-w-4xl my-8">
-        <div className="bg-crimson text-white p-6 rounded-t-lg flex justify-between items-center sticky top-0 z-10">
+    <div className="fixed inset-0 bg-black/70 z-50 flex items-center sm:items-start justify-center p-3 sm:p-4 overflow-y-auto">
+      <div className="bg-white rounded-lg shadow-2xl w-full max-w-4xl my-6 sm:my-8 max-h-[95vh] sm:max-h-[90vh] flex flex-col">
+        <div className="bg-crimson text-white p-4 sm:p-6 rounded-t-lg flex justify-between items-center flex-shrink-0">
           <div>
-            <h2 className="text-2xl font-bold font-serif">Website Editor</h2>
-            <p className="text-blush text-sm">Edit your wedding website content</p>
+            <h2 className="text-xl sm:text-2xl font-bold font-serif">Website Editor</h2>
+            <p className="text-blush text-xs sm:text-sm">Edit your wedding website content</p>
           </div>
-          <button onClick={onClose} className="text-white hover:text-blush text-2xl font-bold leading-none">
+          <button onClick={onClose} className="text-white hover:text-blush text-xl sm:text-2xl font-bold leading-none ml-4">
             ✕
           </button>
         </div>
 
-        <div className="p-6">
+        <div className="p-4 sm:p-6 overflow-y-auto flex-1">
           {message && (
             <div
               className={`p-4 rounded-lg mb-6 font-serif ${

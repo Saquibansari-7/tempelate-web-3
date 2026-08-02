@@ -128,19 +128,93 @@
                 visibility: hidden;
             }
         }
-        #hint {
-            position: absolute;
-            bottom: 50px;
-            width: 100%;
-            text-align: center;
-            color: white;
-            z-index: 20;
-            font-size: 20px;
-            letter-spacing: 2px;
+
+        /* ===== MUSIC DISK ===== */
+        .music-disk {
+            position: fixed;
+            bottom: 28px;
+            right: 28px;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: #111;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+            cursor: pointer;
+            z-index: 100001;
+            overflow: hidden;
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
         }
-        .fade-out {
-            opacity: 0;
-            transition: opacity .5s;
+        .music-disk:hover {
+            transform: scale(1.08);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+        }
+        .music-disk::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            background: repeating-radial-gradient(
+                circle at center,
+                transparent 0px,
+                transparent 2px,
+                rgba(255,255,255,0.04) 2px,
+                rgba(255,255,255,0.04) 3px
+            );
+            pointer-events: none;
+            z-index: 0;
+        }
+        .music-disk-label {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 38%;
+            height: 38%;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f8f4ef, #f4c2c2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+        .music-disk-label::after {
+            content: '';
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #111;
+            position: absolute;
+            z-index: 2;
+        }
+        .music-disk-icon {
+            font-size: 14px;
+            color: #8b0f24;
+            z-index: 3;
+            pointer-events: none;
+            line-height: 1;
+        }
+        .music-disk.playing {
+            animation: music-spin 2.5s linear infinite;
+        }
+        @keyframes music-spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        @media (max-width: 767px) {
+            .music-disk {
+                bottom: 16px;
+                right: 16px;
+                width: 48px;
+                height: 48px;
+            }
+            .music-disk-icon {
+                font-size: 12px;
+            }
+            .music-disk-label::after {
+                width: 6px;
+                height: 6px;
+            }
         }
 
         /* Custom Styles & Utilities */
@@ -213,8 +287,12 @@
   }
 }
 
+/* Image Placeholders */
+.img-placeholder {
+  background: linear-gradient(135deg, #f8f4ef, #f4c2c2);
+}
 
-        /* Timeline Vertical Line */
+/* Timeline Vertical Line */
         .timeline-line {
             position: absolute;
             left: 50%;
@@ -316,7 +394,6 @@
         <div class="curtain left"></div>
         <div class="curtain right"></div>
         <img id="stamp" src="/uploads/c-stamp-web.png" alt="seal">
-        <div id="hint">Click the seal to open</div>
     </div>
 </div>
 
@@ -337,10 +414,10 @@
             </div>
 
             <!-- Couple Photo Frame -->
-            <div class="relative mx-auto w-64 h-64 md:w-80 md:h-80 mb-8 group cursor-pointer reveal">
+            <div class="relative mx-auto w-64 h-64 md:w-80 md:h-80 mb-8 group cursor-pointer reveal img-placeholder rounded-full">
                 <div class="absolute inset-0 border-4 border-double border-blush rounded-full transform transition-all duration-500 group-hover:rotate-12 group-hover:scale-105"></div>
                 <div class="absolute -inset-2 border border-white/30 rounded-full animate-pulse-slow"></div>
-                <img data-bind="hero-img" src="https://picsum.photos/seed/isabelkevin/400/400" alt="Couple" class="w-full h-full object-cover rounded-full shadow-2xl filter sepia-[.3]" id="coupleImg">
+                <img data-bind="hero-img" src="" alt="Couple" class="w-full h-full object-cover rounded-full shadow-2xl filter sepia-[.3]" id="coupleImg" loading="eager">
                 <div class="absolute -bottom-4 right-0 bg-dark text-blush text-xs font-bold px-3 py-1 rounded-full border border-blush" id="hashtag" data-bind="hashtag">#IsabelAndKevin</div>
             </div>
 
@@ -442,8 +519,8 @@
 
             <div class="w-full md:w-1/2 flex justify-center relative reveal">
                 <!-- Rotated Photo Frame -->
-                <div class="relative w-72 h-96 transform rotate-3 hover:rotate-0 transition duration-500 shadow-2xl">
-                    <img data-bind="story-img" src="https://picsum.photos/seed/lovestory/400/600" alt="Love Story" class="w-full h-full object-cover border-8 border-white/90" id="storyImg">
+                <div class="relative w-72 h-96 transform rotate-3 hover:rotate-0 transition duration-500 shadow-2xl img-placeholder">
+                     <img data-bind="story-img" src="" alt="Love Story" class="w-full h-full object-cover border-8 border-white/90" id="storyImg" loading="lazy">
                     <!-- Tape Effect -->
                     <div class="absolute -top-4 left-1/2 -translate-x-1/2 w-32 h-8 bg-white/40 transform rotate-2 shadow-sm"></div>
                 </div>
@@ -576,8 +653,8 @@
         <div class="absolute inset-0 bg-gradient-to-b from-crimson/60 via-transparent to-crimson/90"></div>
 
         <div class="relative z-10 container mx-auto px-6">
-            <div class="w-32 h-32 mx-auto mb-8 rounded-full border-4 border-blush p-1 animate-float">
-                <img src="https://picsum.photos/seed/couplefinal/200/200" class="w-full h-full object-cover rounded-full grayscale" id="finalImg">
+            <div class="w-32 h-32 mx-auto mb-8 rounded-full border-4 border-blush p-1 animate-float img-placeholder">
+                <img src="" class="w-full h-full object-cover rounded-full grayscale" id="finalImg" loading="lazy">
             </div>
             
             <h2 id="endNames" class="font-display text-5xl md:text-7xl mb-4" data-bind="footer-names">Isabel & Kevin</h2>
@@ -1213,19 +1290,50 @@
     <script type="module" src="/src/main.tsx"></script>
     <!-- UNIQUE-MARKER-ADMIN-MOUNT -->
 
+    <!-- Music Disk -->
+    <div id="musicDisk" class="music-disk" title="Play/Pause Music">
+      <div class="music-disk-label">
+        <span class="music-disk-icon">♪</span>
+      </div>
+    </div>
+
     <script>
         const stamp = document.getElementById('stamp');
         const scene = document.getElementById('scene');
-        const hint = document.getElementById('hint');
         const introOverlay = document.getElementById('introOverlay');
 
         document.body.style.overflow = 'hidden';
 
         const isAdmin = window.location.pathname && window.location.pathname.startsWith('/admin');
         if (!isAdmin) {
+            const music = new Audio('/uploads/Ed%20Sheeran%20-wedding%20(mp3cut.net).mp3');
+            music.loop = true;
+            music.volume = 0.5;
+
+            const musicDisk = document.getElementById('musicDisk');
+
+            function updateDiskState() {
+                if (!musicDisk) return;
+                if (!music.paused) {
+                    musicDisk.classList.add('playing');
+                } else {
+                    musicDisk.classList.remove('playing');
+                }
+            }
+
+            if (musicDisk) {
+                musicDisk.addEventListener('click', () => {
+                    if (music.paused) {
+                        music.play().then(() => updateDiskState()).catch(() => {});
+                    } else {
+                        music.pause();
+                        updateDiskState();
+                    }
+                });
+            }
+
             stamp.addEventListener('click', () => {
                 stamp.classList.add('break');
-                hint.classList.add('fade-out');
 
                 setTimeout(() => {
                     scene.classList.add('open');
@@ -1234,11 +1342,13 @@
                 setTimeout(() => {
                     introOverlay.style.display = 'none';
                     document.body.style.overflow = '';
+                    music.play().then(() => updateDiskState()).catch(() => {});
                 }, 2800);
             });
         } else {
             introOverlay.style.display = 'none';
         }
     </script>
+
 </body>
 </html>
