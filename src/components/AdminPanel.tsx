@@ -10,28 +10,38 @@ interface AdminPanelProps {
 }
 
 export default function AdminPanel({ initialContent, onClose, onLogout }: AdminPanelProps) {
-  const [content, setContent] = useState<WebsiteContent>(
-    initialContent || {
-      couple: { name1: '', name2: '', hashtag: '' },
-      hero: { subtitle: '', date: '', location: '', image: '' },
-      saveTheDate: { heading: '', quote: '' },
-      countdown: { targetDate: '', heading: '' },
-      story: { heading: '', paragraph1: '', paragraph2: '', image: '' },
-      events: {
-        ceremony: { time: '', venue: '', location: '', mapCoords: { latitude: '', longitude: '' } },
-        reception: { time: '', venue: '', location: '', mapCoords: { latitude: '', longitude: '' } },
-        mapLocation: { address: '', city: '', region: '', mapUrl: '' },
-        menuImage: '',
-      },
-      gallery: { enabled: false, images: [] },
-      quote: { text: '', author: '' },
-      rsvp: { heading: '', deadline: '', whatsapp: '' },
-      entourage: { parents: '', sponsors: '', maidOfHonor: '', bestMan: '' },
-      footer: { date: '', tagline: '', socials: { instagram: '', x: '', facebook: '' }, image: '', text: '' },
-      invitationCard: { image: '' },
-      timeline: [],
-    }
-  );
+  const defaultContent: WebsiteContent = {
+    couple: { name1: '', name2: '', hashtag: '' },
+    hero: { subtitle: '', date: '', image: '' },
+    saveTheDate: { heading: '', quote: '' },
+    countdown: { targetDate: '', heading: '' },
+    story: { paragraph1: '', paragraph2: '', image: '' },
+    events: {
+      ceremony: { time: '', venue: '', location: '', mapCoords: { latitude: '', longitude: '' } },
+      reception: { time: '', venue: '', location: '', mapCoords: { latitude: '', longitude: '' } },
+      mapLocation: { address: '', city: '', region: '', mapUrl: '' },
+      menuImage: '',
+    },
+    gallery: { enabled: false, images: [] },
+    quote: { text: '', author: '' },
+    rsvp: { heading: '', deadline: '', whatsapp: '' },
+    entourage: { parents: '', sponsors: '', maidOfHonor: '', bestMan: '' },
+    footer: { date: '', tagline: '', socials: { instagram: '', x: '', facebook: '' }, image: '' },
+    invitationCard: { image: '' },
+    timeline: [
+      { event: 'Ceremony', description: 'Exchange of vows and rings', time: '10:00 AM', icon: 'fas fa-church' },
+      { event: 'Cocktails', description: 'Drinks and canapes by the garden', time: '12:00 PM', icon: 'fas fa-cocktail' },
+      { event: 'Lunch & Program', description: 'Feast, speeches, and dancing', time: '1:00 PM', icon: 'fas fa-utensils' },
+      { event: 'Cake Cutting', description: 'Sweet beginnings', time: '3:30 PM', icon: 'fas fa-birthday-cake' },
+      { event: 'Farewell', description: 'Grand exit send-off', time: '5:00 PM', icon: 'fas fa-door-open' },
+    ],
+  };
+
+  const initContent = initialContent || defaultContent;
+  const [content, setContent] = useState<WebsiteContent>({
+    ...initContent,
+    timeline: initContent.timeline?.length ? initContent.timeline : defaultContent.timeline,
+  });
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
   const [activeSection, setActiveSection] = useState('couple');
@@ -85,6 +95,24 @@ export default function AdminPanel({ initialContent, onClose, onLogout }: AdminP
     }
   };
 
+  const handleResetAll = async () => {
+    setSaving(true);
+    setMessage(null);
+    const reset = JSON.parse(JSON.stringify(defaultContent));
+    setContent(reset);
+    try {
+      const frontNames = `${reset.couple.name1} & ${reset.couple.name2}`;
+      const endNames = `${reset.couple.name1} & ${reset.couple.name2}`;
+      await saveContent('default', { ...reset, frontNames, endNames }, {});
+      await syncToDataJson('default', { ...reset, frontNames, endNames }, {});
+      setMessage({ type: 'success', text: 'All content reset to default' });
+    } catch (err: any) {
+      setMessage({ type: 'error', text: err.message || 'Reset failed' });
+    } finally {
+      setSaving(false);
+    }
+  };
+
   const handleResetBroken = async () => {
     setContent(prev => ({
       ...prev,
@@ -97,7 +125,6 @@ export default function AdminPanel({ initialContent, onClose, onLogout }: AdminP
 
   const sections = [
     { id: 'couple', label: 'Couple & Hero', icon: 'fa-heart' },
-    { id: 'saveTheDate', label: 'Save the Date', icon: 'fa-envelope' },
     { id: 'countdown', label: 'Countdown', icon: 'fa-clock' },
     { id: 'story', label: 'Story', icon: 'fa-book' },
     { id: 'entourage', label: 'Entourage', icon: 'fa-users' },
@@ -157,14 +184,7 @@ export default function AdminPanel({ initialContent, onClose, onLogout }: AdminP
                 <Input label="Name 2" value={content.couple.name2} onChange={v => update('couple.name2', v)} />
                 <Input label="Hashtag" value={content.couple.hashtag} onChange={v => update('couple.hashtag', v)} />
                 <Input label="Hero Date" type="datetime-local" value={content.hero.date} onChange={v => update('hero.date', v)} />
-                <Input label="Hero Location" value={content.hero.location} onChange={v => update('hero.location', v)} />
                 <ImageInput label="Hero Image" value={content.hero.image} onChange={v => update('hero.image', v)} onUpload={e => handleImageUpload(e, 'hero.image')} />
-              </Section>
-            )}
-
-            {activeSection === 'saveTheDate' && (
-              <Section title="Save the Date">
-                <Input label="Heading" value={content.saveTheDate.heading} onChange={v => update('saveTheDate.heading', v)} />
               </Section>
             )}
 
@@ -176,7 +196,6 @@ export default function AdminPanel({ initialContent, onClose, onLogout }: AdminP
 
             {activeSection === 'story' && (
               <Section title="Love Story">
-                <Input label="Heading" value={content.story.heading} onChange={v => update('story.heading', v)} />
                 <Input label="Paragraph 1" value={content.story.paragraph1} onChange={v => update('story.paragraph1', v)} textarea />
                 <Input label="Paragraph 2" value={content.story.paragraph2} onChange={v => update('story.paragraph2', v)} textarea />
                 <ImageInput label="Story Image" value={content.story.image} onChange={v => update('story.image', v)} onUpload={e => handleImageUpload(e, 'story.image')} />
@@ -198,8 +217,6 @@ export default function AdminPanel({ initialContent, onClose, onLogout }: AdminP
                   <Input label="Time" value={content.events.reception.time} onChange={v => update('events.reception.time', v)} />
                   <Input label="Venue" value={content.events.reception.venue} onChange={v => update('events.reception.venue', v)} />
                   <Input label="Location" value={content.events.reception.location} onChange={v => update('events.reception.location', v)} className="md:col-span-2" />
-                  <Input label="Map Latitude" value={content.events.reception.mapCoords?.latitude || ''} onChange={v => update('events.reception.mapCoords', { ...(content.events.reception.mapCoords || {}), latitude: v })} />
-                  <Input label="Map Longitude" value={content.events.reception.mapCoords?.longitude || ''} onChange={v => update('events.reception.mapCoords', { ...(content.events.reception.mapCoords || {}), longitude: v })} />
                 </div>
                 <h3 className="font-serif font-bold text-crimson mb-4">Menu</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -219,8 +236,6 @@ export default function AdminPanel({ initialContent, onClose, onLogout }: AdminP
 
             {activeSection === 'footer' && (
               <Section title="Footer">
-                <Input label="Tagline" value={content.footer.tagline} onChange={v => update('footer.tagline', v)} className="md:col-span-2" />
-                <Input label="Footer Text" value={content.footer.text} onChange={v => update('footer.text', v)} className="md:col-span-2" textarea />
                 <ImageInput label="Footer Image" value={content.footer.image} onChange={v => update('footer.image', v)} onUpload={e => handleImageUpload(e, 'footer.image')} className="md:col-span-2" />
               </Section>
             )}
@@ -283,6 +298,13 @@ export default function AdminPanel({ initialContent, onClose, onLogout }: AdminP
               className="bg-crimson hover:bg-burgundy text-white font-bold py-3 px-8 rounded-lg transition duration-300 disabled:opacity-50"
             >
               {saving ? 'Saving...' : 'Save Changes'}
+            </button>
+            <button
+              onClick={handleResetAll}
+              disabled={saving}
+              className="bg-red-100 hover:bg-red-200 text-red-700 font-bold py-3 px-8 rounded-lg transition duration-300 disabled:opacity-50"
+            >
+              Reset All
             </button>
             <button
               onClick={handleResetBroken}

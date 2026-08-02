@@ -712,7 +712,11 @@
               timeline: Array.isArray(content.timeline) ? content.timeline : [],
               frontNames: `${content.couple?.name1 || ''} & ${content.couple?.name2 || ''}`,
               endNames: `${content.couple?.name1 || ''} & ${content.couple?.name2 || ''}`,
-              locationCoords: content.events?.ceremony?.mapCoords || content.events?.reception?.mapCoords || { latitude: '', longitude: '' }
+              locationCoords: content.events?.ceremony?.mapCoords || content.events?.reception?.mapCoords || { latitude: '', longitude: '' },
+              footer: {
+                text: content.footer?.text || '',
+                image: content.footer?.image || ''
+              }
             };
             console.log('[site] mapped keys:', Object.keys(mapped));
             return mapped;
@@ -827,9 +831,13 @@
             document.getElementById("hashtag").innerText = data.texts.hashtag;
 
             // Update images
-            document.getElementById("coupleImg").src = data.images.couple;
-            document.getElementById("storyImg").src = data.images.story;
-            document.getElementById("finalImg").src = data.images.final;
+            const cacheBust = (url) => {
+              if (!url) return url;
+              return url.includes('?') ? `${url}&_=${Date.now()}` : `${url}?_=${Date.now()}`;
+            };
+            document.getElementById("coupleImg").src = cacheBust(data.images.couple);
+            document.getElementById("storyImg").src = cacheBust(data.images.story);
+            document.getElementById("finalImg").src = cacheBust(data.footer?.image || data.images.final);
 
             // Front names and end-page names
             if (data.frontNames) {

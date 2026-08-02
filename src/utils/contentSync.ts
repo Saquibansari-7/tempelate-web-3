@@ -29,10 +29,11 @@ export function syncContentToDOM(content: WebsiteContent, sections: SectionSetti
     if (!el) return;
     const trimmed = (value || '').trim();
     if (!trimmed) {
+      el.style.display = 'none';
       if (import.meta.env.DEV) console.warn('[sync] skip empty image src', sel, trimmed);
       return;
     }
-
+    el.style.display = '';
     const cacheBusted = trimmed.includes('?') ? `${trimmed}&_=${Date.now()}` : `${trimmed}?_=${Date.now()}`;
     const changed = el.getAttribute('data-src') !== cacheBusted;
     if (changed) {
@@ -98,7 +99,8 @@ export function syncContentToDOM(content: WebsiteContent, sections: SectionSetti
   if (import.meta.env.DEV) console.log('[sync] footer-names text', '=>', footerNames);
 
   set('[data-bind="footer-date"]', content.footer.date);
-  set('[data-bind="footer-tagline"]', content.footer.tagline);
+
+  setSrc('[data-bind="footer-img"]', content.footer.image);
 
   if (content.footer.socials) {
     const instagram = document.querySelector('[data-bind="footer-instagram"]') as HTMLAnchorElement | null;
