@@ -742,20 +742,6 @@
             }
           }
 
-          async function tryServerData() {
-            try {
-              const res = await fetch('http://localhost:8080/data');
-              console.log('[site] server status:', res.status, res.statusText);
-              if (!res.ok) return null;
-              const text = await res.text();
-              console.log('[site] server body starts with:', text.slice(0, 60));
-              return JSON.parse(text);
-            } catch (e) {
-              console.warn('[site] server load failed:', e);
-              return null;
-            }
-          }
-
           function mapToLegacyFormat(content) {
             const mapped = {
               weddingDate: content.countdown?.targetDate || content.hero?.date || '',
@@ -803,9 +789,7 @@
           console.log('[site] supabaseData?', !!supabaseData);
           const localData = await tryLocalData();
           console.log('[site] localData?', !!localData);
-          const serverData = await tryServerData();
-          console.log('[site] serverData?', !!serverData);
-          data = (supabaseData ? mapToLegacyFormat(supabaseData) : null) || localData || serverData || {
+          data = (supabaseData ? mapToLegacyFormat(supabaseData) : null) || localData || {
             weddingDate: '2026-08-22T11:00',
             texts: {
               welcome: 'We are so excited to celebrate our love with the people who mean the most to us. Join us for a day filled with laughter, love, and happily ever afters.',
