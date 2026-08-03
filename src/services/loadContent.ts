@@ -8,7 +8,6 @@ export async function loadContent(siteId: string) {
     if (import.meta.env.DEV) console.error('[loadContent]', err.message);
     throw err;
   }
-
   const { data, error } = await supabase
     .from('site_content')
     .select('data')
@@ -23,13 +22,32 @@ export async function loadContent(siteId: string) {
   const raw = data?.data as Partial<WebsiteContent> | undefined;
   if (!raw) return null;
 
-  const sanitized = {
+  const hero = raw.hero ?? { subtitle: '', date: '', location: '', image: '' };
+  const story = raw.story ?? { heading: '', paragraph1: '', paragraph2: '', image: '' };
+  const invitationCard = raw.invitationCard ?? { image: '' };
+  const gallery = raw.gallery ?? { enabled: false, images: [] };
+
+  const sanitized: WebsiteContent = {
     ...raw,
-    hero: { ...raw.hero, image: normalizeImage(raw.hero.image) },
-    story: { ...raw.story, image: normalizeImage(raw.story.image) },
-    invitationCard: { ...raw.invitationCard, image: normalizeImage(raw.invitationCard.image) },
-    gallery: { ...raw.gallery, images: raw.gallery.images.map(normalizeImage) },
-  } as WebsiteContent;
+    couple: raw.couple ?? { name1: '', name2: '', hashtag: '' },
+    hero: { ...hero, image: normalizeImage(hero.image) },
+    saveTheDate: raw.saveTheDate ?? { heading: '', quote: '' },
+    countdown: raw.countdown ?? { targetDate: '', heading: '' },
+    story: { ...story, image: normalizeImage(story.image) },
+    events: raw.events ?? {
+      ceremony: { time: '', venue: '', location: '', mapCoords: { latitude: '', longitude: '' } },
+      reception: { time: '', venue: '', location: '', mapCoords: { latitude: '', longitude: '' } },
+      mapLocation: { address: '', city: '', region: '', mapUrl: '' },
+      menuImage: '',
+    },
+    gallery: { ...gallery, images: Array.isArray(gallery.images) ? gallery.images.map(normalizeImage) : [] },
+    quote: raw.quote ?? { text: '', author: '' },
+    rsvp: raw.rsvp ?? { heading: '', deadline: '', whatsapp: '' },
+    entourage: raw.entourage ?? { parents: '', sponsors: '', maidOfHonor: '', bestMan: '' },
+    footer: raw.footer ?? { date: '', tagline: '', socials: { instagram: '', x: '', facebook: '' }, image: '', text: '' },
+    invitationCard: { ...invitationCard, image: normalizeImage(invitationCard.image) },
+    timeline: Array.isArray(raw.timeline) ? raw.timeline : [],
+  };
 
   if (import.meta.env.DEV) {
     console.log('[loadContent] FINAL heroImage:', sanitized.hero.image);
