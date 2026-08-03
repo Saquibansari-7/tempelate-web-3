@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { WebsiteContent } from '../types';
-import { saveContent, syncToDataJson } from '../services/saveContent';
+import { saveContent } from '../services/saveContent';
 import { uploadImage } from '../services/uploadImage';
 import { defaultContent } from '../context/WebsiteContext';
 
@@ -60,7 +60,6 @@ export default function AdminPanel({ initialContent, onClose, onLogout }: AdminP
       const frontNames = `${content.couple.name1} & ${content.couple.name2}`;
       const endNames = `${content.couple.name1} & ${content.couple.name2}`;
       await saveContent('default', { ...content, frontNames, endNames }, {});
-      await syncToDataJson('default', { ...content, frontNames, endNames }, {});
       setMessage({ type: 'success', text: 'Content saved successfully!' });
     } catch (err: any) {
       setMessage({ type: 'error', text: err.message || 'Save failed' });
@@ -78,7 +77,6 @@ export default function AdminPanel({ initialContent, onClose, onLogout }: AdminP
       const frontNames = `${reset.couple.name1} & ${reset.couple.name2}`;
       const endNames = `${reset.couple.name1} & ${reset.couple.name2}`;
       await saveContent('default', { ...reset, frontNames, endNames }, {});
-      await syncToDataJson('default', { ...reset, frontNames, endNames }, {});
       setMessage({ type: 'success', text: 'All content reset to default' });
     } catch (err: any) {
       setMessage({ type: 'error', text: err.message || 'Reset failed' });
