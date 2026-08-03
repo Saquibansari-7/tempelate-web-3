@@ -1,7 +1,7 @@
 import { createContext, useContext } from 'react';
 import { WebsiteContent } from '../types';
 
-const defaultContent: WebsiteContent = {
+export const defaultContent: WebsiteContent = {
   couple: {
     name1: 'Farhan',
     name2: 'Mariyaa',

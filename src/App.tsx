@@ -17,16 +17,6 @@ export default function App() {
   useEffect(() => {
     if (!adminOpen) return;
 
-    fetch('/api/auth-status')
-      .then(res => res.ok ? res.json() : null)
-      .then(data => {
-        if (data?.authenticated) {
-          setAuthenticated(true);
-          sessionStorage.setItem('adminAuth', 'true');
-        }
-      })
-      .catch(() => {});
-
     loadContent('default')
       .then((result) => {
         if (!result) throw new Error('No site content found');
@@ -68,5 +58,5 @@ export default function App() {
     );
   }
 
-  return <AdminPanel initialContent={content} onClose={() => setAdminOpen(false)} onLogout={() => { sessionStorage.removeItem('adminAuth'); setAuthenticated(false); setAdminOpen(false); fetch('/logout', { method: 'POST' }).catch(() => {}); }} />;
+  return <AdminPanel initialContent={content} onClose={() => setAdminOpen(false)} onLogout={() => { sessionStorage.removeItem('adminAuth'); setAuthenticated(false); setAdminOpen(false); }} />;
 }

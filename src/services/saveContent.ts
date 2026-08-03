@@ -1,29 +1,9 @@
 import { supabase } from '../lib/supabase';
 import { WebsiteContent, SectionSettings } from '../types';
-
-const EXPECTED_SUPABASE_HOST = (() => {
-  try {
-    const raw = (import.meta.env.VITE_PUBLIC_SUPABASE_URL as string) || '';
-    if (!raw) return '';
-    const parsed = new URL(raw);
-    return parsed.hostname;
-  } catch {
-    return '';
-  }
-})();
-
-function normalizeImage(value: string): string {
-  if (!value || value.startsWith('/uploads/')) return value;
-  const normalized = value.replace(/https?:\/\/[^/]+\.supabase\.co\//, (match) => {
-    if (!EXPECTED_SUPABASE_HOST) return match;
-    if (match.includes(EXPECTED_SUPABASE_HOST)) return match;
-    return `https://${EXPECTED_SUPABASE_HOST}/`;
-  });
-  return normalized;
-}
+import { normalizeImage } from '../utils/imageUrl';
 
 export async function saveContent(siteId: string, content: WebsiteContent, sections: SectionSettings) {
-  if (import.meta.env.DEV) console.log('saveContent - siteId:', siteId, 'expectedSupabaseHost:', EXPECTED_SUPABASE_HOST);
+  if (import.meta.env.DEV) console.log('saveContent - siteId:', siteId);
 
   if (!supabase || typeof supabase.from !== 'function') {
     const err = new Error('Supabase not configured - check your .env file');
@@ -60,9 +40,13 @@ export async function saveContent(siteId: string, content: WebsiteContent, secti
 }
 
 export async function syncToDataJson(siteId: string, content: WebsiteContent, sections: SectionSettings) {
+  const apiSecret = typeof import.meta.env.VITE_API_SECRET === 'string' ? import.meta.env.VITE_API_SECRET.trim() : '';
   const res = await fetch('/api/update-data', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Api-Secret': apiSecret,
+    },
     body: JSON.stringify({ siteId, content, sections }),
   });
 

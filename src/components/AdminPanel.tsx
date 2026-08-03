@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { WebsiteContent } from '../types';
 import { saveContent, syncToDataJson } from '../services/saveContent';
 import { uploadImage } from '../services/uploadImage';
+import { defaultContent } from '../context/WebsiteContext';
 
 interface AdminPanelProps {
   initialContent: WebsiteContent | null;
@@ -10,33 +11,6 @@ interface AdminPanelProps {
 }
 
 export default function AdminPanel({ initialContent, onClose, onLogout }: AdminPanelProps) {
-  const defaultContent: WebsiteContent = {
-    couple: { name1: '', name2: '', hashtag: '' },
-    hero: { subtitle: '', date: '', image: '' },
-    saveTheDate: { heading: '', quote: '' },
-    countdown: { targetDate: '', heading: '' },
-    story: { paragraph1: '', paragraph2: '', image: '' },
-    events: {
-      ceremony: { time: '', venue: '', location: '', mapCoords: { latitude: '', longitude: '' } },
-      reception: { time: '', venue: '', location: '', mapCoords: { latitude: '', longitude: '' } },
-      mapLocation: { address: '', city: '', region: '', mapUrl: '' },
-      menuImage: '',
-    },
-    gallery: { enabled: false, images: [] },
-    quote: { text: '', author: '' },
-    rsvp: { heading: '', deadline: '', whatsapp: '' },
-    entourage: { parents: '', sponsors: '', maidOfHonor: '', bestMan: '' },
-    footer: { date: '', tagline: '', socials: { instagram: '', x: '', facebook: '' }, image: '' },
-    invitationCard: { image: '' },
-    timeline: [
-      { event: 'Ceremony', description: 'Exchange of vows and rings', time: '10:00 AM', icon: 'fas fa-church' },
-      { event: 'Cocktails', description: 'Drinks and canapes by the garden', time: '12:00 PM', icon: 'fas fa-cocktail' },
-      { event: 'Lunch & Program', description: 'Feast, speeches, and dancing', time: '1:00 PM', icon: 'fas fa-utensils' },
-      { event: 'Cake Cutting', description: 'Sweet beginnings', time: '3:30 PM', icon: 'fas fa-birthday-cake' },
-      { event: 'Farewell', description: 'Grand exit send-off', time: '5:00 PM', icon: 'fas fa-door-open' },
-    ],
-  };
-
   const initContent = initialContent || defaultContent;
   const [content, setContent] = useState<WebsiteContent>({
     ...initContent,

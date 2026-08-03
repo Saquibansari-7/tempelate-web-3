@@ -1,77 +1,38 @@
 const express = require('express');
-const session = require('express-session');
-const bodyParser = require('body-parser');
 const path = require('path');
 const fs = require('fs');
 
 const app = express();
 const PORT = process.env.PORT || 8080;
 
-app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static('dist'));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-app.use(session({
-  secret: 'wedding-secret-key-change-in-production',
-  resave: false,
-  saveUninitialized: false,
-  cookie: { secure: false }
-}));
+const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'admin';
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'password';
+const API_SECRET = process.env.API_SECRET || 'change-me-in-production';
 
-const ADMIN_USERNAME = 'admin';
-const ADMIN_PASSWORD = 'password';
-
-function requireAuth(req, res, next) {
-  if (req.session && req.session.loggedIn) {
+function requireApiSecret(req, res, next) {
+  const secret = req.headers['x-api-secret'];
+  if (secret === API_SECRET) {
     return next();
   }
-  return res.redirect('/login');
+  return res.status(401).json({ success: false, error: 'Unauthorized' });
 }
 
-app.get('/login', (req, res) => {
-  res.sendFile(path.join(__dirname, 'login.html'));
-});
-
-app.post('/login', (req, res) => {
-  const { username, password } = req.body;
-  
-  if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
-    req.session.loggedIn = true;
-    return res.redirect('/admin');
-  }
-  
-  res.send('<h2>Invalid credentials</h2><p><a href="/login">Try again</a></p>');
-});
-
 app.get('/data', (req, res) => {
-  res.set('Access-Control-Allow-Origin', '*');
-  res.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
-  res.set('Access-Control-Allow-Headers', 'Content-Type');
   res.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
   res.set('Pragma', 'no-cache');
   res.set('Expires', '0');
   res.sendFile(path.join(__dirname, 'data.json'));
 });
 
-app.get('/api/auth-status', (req, res) => {
-  if (req.session && req.session.loggedIn) {
-    return res.json({ authenticated: true });
-  }
-  res.status(401).json({ authenticated: false });
-});
-
 app.get('/admin', (req, res) => {
   res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 
-app.post('/logout', (req, res) => {
-  req.session.destroy((err) => {
-    res.redirect('/');
-  });
-});
-
-app.post('/api/update-data', (req, res) => {
+app.post('/api/update-data', requireApiSecret, (req, res) => {
   try {
     const websiteContent = req.body.content || req.body;
     const existingData = JSON.parse(fs.readFileSync(path.join(__dirname, 'data.json'), 'utf8'));
@@ -134,6 +95,8 @@ app.get('*', (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
-  console.log(`Admin login: http://localhost:${PORT}/login`);
-  console.log(`Credentials: ${ADMIN_USERNAME} / ${ADMIN_PASSWORD}`);
+  console.log(`Admin panel: http://localhost:${PORT}/admin`);
+  if (ADMIN_PASSWORD === 'password') {
+    console.warn('WARNING: Using default admin password. Set ADMIN_PASSWORD env var in production.');
+  }
 });
