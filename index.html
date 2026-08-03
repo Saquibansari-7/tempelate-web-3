@@ -664,11 +664,11 @@
                 <div class="w-10 h-10 rounded-full border border-white bg-gray-400"></div>
                 <div class="w-10 h-10 rounded-full border border-white bg-gray-500"></div>
                 <div class="w-10 h-10 rounded-full border border-white bg-gray-400"></div>
-                <div class="w-10 h-10 rounded-full border border-white bg-crimson flex items-center justify-center text-xs font-bold">+50</div>
+                <div class="w-10 h-10 rounded-full border border-white bg-crimson flex items-center justify-center text-xs font-bold">+100</div>
             </div>
 
             <button class="px-10 py-4 border border-white text-white font-serif uppercase tracking-widest hover:bg-white hover:text-crimson transition duration-300" onclick="triggerPetalBurst(event)">
-                Send Love
+                Send Love <span id="loveCount" class="ml-2 bg-white/20 px-2 py-1 rounded-full text-sm">0</span>
             </button>
         </div>
     </section>
@@ -1231,7 +1231,25 @@
             for(let i=0; i<30; i++) {
                 burstParticles.push(new BurstPetal(originX, originY));
             }
+
+            // Update love count
+            const loveCountEl = document.getElementById('loveCount');
+            if (loveCountEl) {
+                let count = parseInt(localStorage.getItem('loveCount') || '0', 10);
+                count++;
+                localStorage.setItem('loveCount', count);
+                loveCountEl.textContent = count;
+            }
         }
+
+        // Initialize love count display
+        (function initLoveCount() {
+            const loveCountEl = document.getElementById('loveCount');
+            if (loveCountEl) {
+                const count = parseInt(localStorage.getItem('loveCount') || '0', 10);
+                loveCountEl.textContent = count;
+            }
+        })();
 
         class BurstPetal {
             constructor(x, y) {
