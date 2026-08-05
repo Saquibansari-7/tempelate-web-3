@@ -829,12 +829,15 @@
             endNames: 'Farhan & Mariyaa',
             locationCoords: { latitude: '', longitude: '' }
           };
-          try {
-            console.log('[site] initDynamicContent called with data:', !!data);
-            initDynamicContent();
-          } catch (e) {
-            console.error('[site] initDynamicContent failed:', e);
-          }
+                    try {
+                        console.log('[site] initDynamicContent called with data:', !!data);
+                        // Don't run site DOM initialization when in the admin UI
+                        if (!window.location.pathname || !window.location.pathname.startsWith('/admin')) {
+                            initDynamicContent();
+                        }
+                    } catch (e) {
+                        console.error('[site] initDynamicContent failed:', e);
+                    }
         })();
 
         function generateCalendar(year, month, highlightDay) {
