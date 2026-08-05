@@ -718,10 +718,20 @@
                 console.warn('[site] Supabase response:', text.slice(0, 200));
                 return null;
               }
-              const json = await res.json();
-              console.log('[site] Supabase json keys:', Object.keys(json || {}));
-              if (json && json.data) return json.data;
-              return null;
+              const json = await res.json().catch(() => null);
+              console.log('[site] Supabase raw json:', json);
+
+              let content = null;
+              if (json && json.data) {
+                content = json.data;
+              } else if (Array.isArray(json) && json.length && json[0] && json[0].data) {
+                content = json[0].data;
+              } else if (Array.isArray(json) && json.length && typeof json[0] === 'object') {
+                content = json[0];
+              }
+
+              console.log('[site] Supabase parsed content?', !!content);
+              return content || null;
             } catch (e) {
               console.warn('[site] Supabase load failed:', e);
               return null;
